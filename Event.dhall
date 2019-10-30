@@ -1,5 +1,6 @@
 -- See: https://help.github.com/en/github/automating-your-workflow-with-github-actions/events-that-trigger-workflows#about-workflow-events
-let RefFilter = (./RefFilter.dhall).Type
+
+let Filters = (./RefFilter.dhall).Type ⩓ (./PathFilter.dhall).Type
 
 let ScheduleEvent = (./ScheduleEvent.dhall).Type
 
@@ -21,10 +22,10 @@ in  < check_run
     | project_card
     | project_column
     | public
-    | pull_request : Optional RefFilter
+    | pull_request : Optional Filters
     | pull_request_review
     | pull_request_review_comment
-    | push : Optional RefFilter
+    | push : Optional Filters
     | release
     | status
     | watch
