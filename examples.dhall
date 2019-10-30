@@ -1,3 +1,5 @@
+let Env = ./Env.dhall
+
 let Event = ./Event.dhall
 
 let Job = ./Job.dhall
@@ -8,9 +10,11 @@ let RefFilter = ./RefFilter.dhall
 
 let RunsOn = ./RunsOn.dhall
 
+let Step = ./Step.dhall
+
 let Jobs = List { mapKey : Text, mapValue : Job.Type }
 
-let Steps = List (./Step.dhall).Type
+let Steps = List Step.Type
 
 let cron = (./ScheduleEvent.dhall).cron
 
@@ -32,13 +36,18 @@ in  [ { name = "Scheduled Workflow"
             { build-windows =
                 Job::{
                 , name = "Windows job"
-                , steps = [] : Steps
                 , runs-on = Some RunsOn.ubuntu-latest
                 }
             , build-ubuntu =
                 Job::{
+                , env = toMap { HELLo = "WORLD", FOO = "BAR" }
                 , name = "Ubuntu job"
-                , steps = [] : Steps
+                , steps =
+                    [ Step::{
+                      , env = toMap { HOME = "/var/www" }
+                      , name = Some "Some step"
+                      }
+                    ]
                 , runs-on = Some RunsOn.windows-latest
                 }
             }
