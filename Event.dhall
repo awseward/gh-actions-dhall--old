@@ -25,7 +25,7 @@ in  < check_run
     | pull_request : Optional Filters
     | pull_request_review
     | pull_request_review_comment
-    | push : Optional Filters
+    | push : (./PushEvent.dhall).Type
     | release
     | status
     | watch
